@@ -1,0 +1,13 @@
+https://jenkinshero.com/building-a-spring-boot-application-in-jenkins/
+
+curl -X POST -H "Content-Type: application/json" \
+    -v -d \
+    '{ 
+	"name":"Monorail", 
+	"description":"Sedate ride that takes you around the park.", 
+	"thrillFactor":2, 
+	"vomitFactor":1 
+	}' \
+	http://127.0.0.1:8080/ride
+
+
