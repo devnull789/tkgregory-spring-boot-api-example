@@ -41,7 +41,7 @@ ext.apiToken = properties.getProperty('api.token')
 */
 
 //ext.apiToken = System.getenv('DOCKER_HUB_LOGIN') // replace the ext. prefix with def if you don’t want to provide the API token to the default properties which you can then access from all your build scripts
-String dockerHubUsernameJenkinsConfig = System.getenv('DOCKER_HUB_LOGIN') 
+String dockerHubUsernameJenkinsConfig = System.getenv('DOCKER_HUB_LOGIN_USR') 
 project.logger.info("DH name (jenkins)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameJenkinsConfig}")
 
 //Pull dockerHub user name property from ~/.gradle/gradle.properties file...
