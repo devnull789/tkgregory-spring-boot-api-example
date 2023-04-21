@@ -22,7 +22,7 @@ pipeline {
             }
         }
         stage('Push Docker image') {
-            
+            steps {            
             withCredentials([usernamePassword(credentialsId: 'docker-hub',usernameVariable: 'DOCKER_HUB_LOGIN_USR', passwordVariable: 'DOCKER_HUB_LOGIN_PSW')]) {
                 // available as an env variable, but will be masked if you try to print it out any which way
                 // note: single quotes prevent Groovy interpolation; expansion is by Bourne Shell, which is what you want
@@ -35,6 +35,7 @@ pipeline {
             
                 sh 'docker login --username=$DOCKER_HUB_LOGIN_USR --password=$DOCKER_HUB_LOGIN_PSW'
                 sh './gradlew dockerPush'
+            }
             }
         }
     }
