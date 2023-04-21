@@ -31,10 +31,26 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+/*  -- how to read properties from local property file / alternative to 'findProperty'
+Properties properties = new Properties()
+def propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+ properties.load(propertiesFile.newDataInputStream())
+}
+ext.apiToken = properties.getProperty('api.token')
+*/
+
+//ext.apiToken = System.getenv('DOCKER_HUB_LOGIN') // replace the ext. prefix with def if you don’t want to provide the API token to the default properties which you can then access from all your build scripts
+String dockerHubUsernameJenkinsConfig = System.getenv('DOCKER_HUB_LOGIN') 
+project.logger.info("DH name (jenkins)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameJenkinsConfig}")
 
 //Pull dockerHub user name property from ~/.gradle/gradle.properties file...
-String dockerHubUsernameProperty = findProperty('dockerHubUsername') ?: 'tkgregory'
-String imageName = "${dockerHubUsernameProperty}/spring-boot-api-example:$version"
+String dockerHubUsernameLocalProperty = findProperty('dockerHubUsername') ?: 'tkgregory'
+project.logger.info("DH name (local)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameLocalProperty}")
+
+String dockerHubUsername = dockerHubUsernameLocalProperty != null ? dockerHubUsernameLocalProperty : dockerHubUsernameJenkinsConfig
+String imageName = "${dockerHubUsername}/spring-boot-api-example:$version"
+project.logger.info("Image name >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${imageName}")
 
 docker {
     name imageName
@@ -60,7 +76,7 @@ cloudFormation {
             SubnetID: findProperty('subnetId') ?: '',
             ServiceName: project.name,
             ServiceVersion: project.version,
-            DockerHubUsername: dockerHubUsernameProperty
+            DockerHubUsername: dockerHubUsername
     ])
     templateFile project.file("ecs.yml")
 }
