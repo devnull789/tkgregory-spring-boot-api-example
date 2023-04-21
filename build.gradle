@@ -32,8 +32,9 @@ test {
     useJUnitPlatform()
 }
 
-String dockerHubUsernameJenkinsConfig = System.getenv('DOCKER_HUB_LOGIN_USR') 
-project.logger.info("DH name (jenkins)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameJenkinsConfig}")
+//Doesn't work b/c Jenkins hasn't rectreived these env vars yet (later stage)
+//String dockerHubUsernameJenkinsConfig = System.getenv('DOCKER_HUB_LOGIN_USR') 
+//project.logger.info("DH name (jenkins)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameJenkinsConfig}")
 
 Properties properties = new Properties()
 def propertiesFile = project.rootProject.file('local.properties')
@@ -46,8 +47,8 @@ String dockerHubUsernameLocalPropertyGit = properties.getProperty('DOCKER_HUB_US
 
 //Pull dockerHub user name property from ~/.gradle/gradle.properties file...
 //String dockerHubUsernameLocalProperty = findProperty('dockerHubUsername') ? dockerHubUsernameLocalPropertyGit : 'tkgregory'
-String dockerHubUsernameLocalProperty = dockerHubUsernameLocalPropertyGit ? dockerHubUsernameLocalPropertyGit : 'tkgregory'
-project.logger.info("DH name (local)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameLocalProperty}")
+String dockerHubUsernameLocalProperty = dockerHubUsernameLocalPropertyGit ? dockerHubUsernameLocalPropertyGit : ''
+//project.logger.info("DH name (local)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ${dockerHubUsernameLocalProperty}")
 
 String dockerHubUsername = dockerHubUsernameLocalProperty != null ? dockerHubUsernameLocalProperty : dockerHubUsernameJenkinsConfig
 String imageName = "${dockerHubUsername}/spring-boot-api-example:$version"
@@ -57,7 +58,6 @@ docker {
     name imageName
     files "build/libs/${bootJar.archiveFileName.get()}"
     buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
-//    arguments '-u', '0'
 }
 
 dockerRun {

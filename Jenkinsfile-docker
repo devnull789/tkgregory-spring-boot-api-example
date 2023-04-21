@@ -24,13 +24,10 @@ pipeline {
         stage('Push Docker image') {
             steps {            
             withCredentials([usernamePassword(credentialsId: 'docker-hub',usernameVariable: 'DOCKER_HUB_LOGIN_USR', passwordVariable: 'DOCKER_HUB_LOGIN_PSW')]) {
-                // available as an env variable, but will be masked if you try to print it out any which way
-                // note: single quotes prevent Groovy interpolation; expansion is by Bourne Shell, which is what you want
-                //sh 'echo $DOCKER_HUB_LOGIN_USR'
-                // also available as a Groovy variable
-                //echo DOCKER_HUB_LOGIN_USR
-                // or inside double quotes for string interpolation
-                echo "username is >>>>>>>>>>>>>>>>>>>>>>>>>> $DOCKER_HUB_LOGIN_USR"
+                echo "username is >>>>$DOCKER_HUB_LOGIN_USR"
+
+                load "./jenkins_test_config/env.groovy"
+                echo ">>>>>>>>>>>> Say hi:  ${env.HELLO}"
 
             
                 sh 'echo $DOCKER_HUB_LOGIN_PSW | sudo -E docker login --username=$DOCKER_HUB_LOGIN_USR --password-stdin'
