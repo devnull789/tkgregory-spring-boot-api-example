@@ -74,6 +74,7 @@ aws {
 cloudFormation {
     stackName "$project.name-stack"
     stackParams([
+//passing property in on gradle cmd-line:  -PsubnetId=..... 
             SubnetID: findProperty('subnetId') ?: '',
             ServiceName: project.name,
             ServiceVersion: project.version,
