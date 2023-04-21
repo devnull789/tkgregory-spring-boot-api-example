@@ -32,6 +32,7 @@ test {
     useJUnitPlatform()
 }
 
+//Pull dockerHub user name property from ~/.gradle/gradle.properties file...
 String dockerHubUsernameProperty = findProperty('dockerHubUsername') ?: 'tkgregory'
 String imageName = "${dockerHubUsernameProperty}/spring-boot-api-example:$version"
 
@@ -39,6 +40,7 @@ docker {
     name imageName
     files "build/libs/${bootJar.archiveFileName.get()}"
     buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+    arguments '-u', '0'
 }
 
 dockerRun {
@@ -49,7 +51,7 @@ dockerRun {
 }
 
 aws {
-    region = findProperty('region') ?: 'us-east-1'
+    region = findProperty('region') ?: 'us-west-2'
 }
 
 cloudFormation {
