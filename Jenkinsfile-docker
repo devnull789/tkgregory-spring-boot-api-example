@@ -26,7 +26,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'docker-hub',usernameVariable: 'DOCKER_HUB_LOGIN_USR', passwordVariable: 'DOCKER_HUB_LOGIN_PSW')]) {
                 echo "username is >>>>$DOCKER_HUB_LOGIN_USR"
 
-                load "./jenkins_test_config/env.groovy"
+                load "./env.groovy"
                 echo ">>>>>>>>>>>> Say hi:  ${env.HELLO}"
 
             
