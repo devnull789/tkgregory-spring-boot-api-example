@@ -23,14 +23,14 @@ pipeline {
         }
         stage('Push Docker image') {
             steps {            
-              withCredentials([usernamePassword(credentialsId: 'docker-hub',usernameVariable: 'DOCKER_HUB_USR', passwordVariable: 'DOCKER_HUB_PSW')]) {
-                echo "username is >>>>$DOCKER_HUB_USR"
+              withCredentials([usernamePassword(credentialsId: 'docker-hub',usernameVariable: 'DOCKER_HUB_LOGIN_USR', passwordVariable: 'DOCKER_HUB_LOGIN_PSW')]) {
+                echo "username is >>>>$DOCKER_HUB_LOGIN_USR"
 
                 load "./env.groovy"
                 echo ">>>>>>>>>>>> Say hi:  ${env.HELLO}"
 
             
-                sh 'echo $DOCKER_HUB_PSW | sudo -E docker login --username=$DOCKER_HUB_USR --password-stdin'
+                sh 'echo $DOCKER_HUB_LOGIN_PSW | sudo -E docker login --username=$DOCKER_HUB_LOGIN_USR --password-stdin'
                 sh 'sudo -E ./gradlew dockerPush'
               }
             }
